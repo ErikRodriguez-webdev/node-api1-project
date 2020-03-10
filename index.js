@@ -38,6 +38,24 @@ server.get("/api/users", (req, res) => {
   }
 });
 
+server.get("/api/users/:id", (req, res) => {
+  const id = req.params.id;
+  const selectUser = users.filter((each) => {
+    return each.id === id;
+  });
+  if (selectUser.length === 0) {
+    res
+      .status(404)
+      .json({ message: "The user with the specified ID does not exist." });
+  } else if (selectUser) {
+    res.status(200).json(selectUser);
+  } else {
+    res
+      .status(500)
+      .json({ errorMessage: "The user information could not be retrieved." });
+  }
+});
+
 const PORT = 5000;
 server.listen(PORT, () => {
   console.log(`API RUNNING ON localhost:${PORT}`);
